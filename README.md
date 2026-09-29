@@ -1,6 +1,13 @@
+
 # API-TurnOS
 
+<<<<<<< HEAD
 # 1.1 Requisitos Funcionales
+=======
+# Proyecto Programacion Extrema
+## Santiago Marranti, Oriana Moyano
+### _Turnero online_ 
+>>>>>>> df231cd12228ab83ef65bd43d6dc87cf7702a934
 
 ## Historias de Usuarios
 ---
@@ -97,3 +104,8 @@
 >**Como** desarrollador de backend
 <br>**Quiero** utilizar bloqueos a nivel de base de datos (o niveles de aislamiento estrictos) en el endpoint de creación de turnos
 <br>**Para** evitar que dos usuarios reserven el mismo slot horario simultáneamente.
+
+## Historias de Usuario Técnicas o restricciones del sistema relacionadas con rendimiento, seguridad o arquitectura.
+>1.  **Como** auditor de seguridad,   <br>
+> **Quiero** que las contraseñas de los usuarios y los datos sensibles de los pagos se almacenen mediante hashing (ej. bcrypt) <br>
+> **Para** proteger la integridad y privacidad de la información en caso de una vulneración a la base de datos. <br>
