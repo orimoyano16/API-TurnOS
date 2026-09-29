@@ -1,5 +1,7 @@
 # API-TurnOS
 
+# 1.1 Requisitos Funcionales
+
 ## Historias de Usuarios
 ---
 
@@ -84,3 +86,14 @@
 > **WHEN** este seleccione un especialista que no esta disponible <br>
 > **THEN** el sistema le avisa que no esta disponible.
 
+---
+
+# 1.2 Requisitos No Funcionales
+
+## Historias de Usuario Técnicas 
+
+### Control de Concurrencia (evitar doble reserva)
+
+>**Como** desarrollador de backend
+<br>**Quiero** utilizar bloqueos a nivel de base de datos (o niveles de aislamiento estrictos) en el endpoint de creación de turnos
+<br>**Para** evitar que dos usuarios reserven el mismo slot horario simultáneamente.
