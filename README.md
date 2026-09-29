@@ -1,13 +1,9 @@
 
-# API-TurnOS
+# API-TurnOS - Proyecto Programacion Extrema
 
-<<<<<<< HEAD
 # 1.1 Requisitos Funcionales
-=======
-# Proyecto Programacion Extrema
 ## Santiago Marranti, Oriana Moyano
 ### _Turnero online_ 
->>>>>>> df231cd12228ab83ef65bd43d6dc87cf7702a934
 
 ## Historias de Usuarios
 ---
