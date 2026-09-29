@@ -89,3 +89,9 @@
 > **WHEN** este seleccione un especialista que no esta disponible <br>
 > **THEN** el sistema le avisa que no esta disponible.
 
+## Historias de Usuario Técnicas o restricciones del sistema relacionadas con rendimiento, seguridad o arquitectura.
+>1.  **Como** auditor de seguridad,   <br>
+> **Quiero** que las contraseñas de los usuarios y los datos sensibles de los pagos se almacenen mediante hashing (ej. bcrypt) <br>
+> **Para** proteger la integridad y privacidad de la información en caso de una vulneración a la base de datos. <br>
+
+>2.
