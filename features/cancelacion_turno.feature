@@ -1,3 +1,4 @@
+# language: es
 Característica: Cancelacion de turno
 Como usuario de una pagina web,
 Quiero poder cancelar un turno de manera online,
