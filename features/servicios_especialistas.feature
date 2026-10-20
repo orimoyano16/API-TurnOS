@@ -9,7 +9,7 @@ Característica: Cartilla de especialistas y servicios disponibles
         Cuando este abre el panel 
         Entonces el sistema le muestra cada especialista y servicio disponible.
     
-    Escenario
+    Escenario:
         Dado que un usuario quiere conocer los servicios y especialistas disponibles que aun no estan registrados (Error path)
         Cuando este seleccione un especialista que no esta disponible
         Entonces el sistema le avisa que no esta disponible.
