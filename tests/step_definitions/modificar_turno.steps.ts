@@ -1,16 +1,19 @@
 // modificar_turno.steps.ts
 import { Given, When, Then } from "@cucumber/cucumber";
 import * as assert from "assert";
-import { ModificarTurnoService, ResultadoModificacion } from "../../src/Services/modificar_turno.service"
+// 1. Cambiamos ModificarTurnoService por TurnoService y agregamos .ts al final
+import { TurnoService, ResultadoModificacion } from "../../src/Services/turno.service.ts";
 
-let modificarTurnoService: ModificarTurnoService;
+// 2. Usamos TurnoService
+let turnoService: TurnoService;
 let horasAnticipacion: number;
 let resultado: ResultadoModificacion;
 
 // --- HAPPY PATH ---
 
 Given('que un usuario se equivoco de dia que saco su turno \\(Happy path)', async function () {
-    modificarTurnoService = new ModificarTurnoService();
+    // 3. Instanciamos TurnoService
+    turnoService = new TurnoService();
     // Simulamos que el usuario pide la modificación con 48 horas de anticipación (lapso aceptado)
     horasAnticipacion = 48; 
 });
@@ -18,17 +21,17 @@ Given('que un usuario se equivoco de dia que saco su turno \\(Happy path)', asyn
 // --- ERROR PATH ---
 
 Given('que un usuario se equivoco de dia que saco su turno \\(Error path)', async function () {
-    modificarTurnoService = new ModificarTurnoService();
+    // 4. Instanciamos TurnoService
+    turnoService = new TurnoService();
     // Simulamos que el usuario pide la modificación con 10 horas de anticipación (fuera del lapso)
     horasAnticipacion = 10; 
 });
 
 // --- ACCIÓN COMPARTIDA (WHEN) ---
 
-// Este paso es idéntico en ambos escenarios del .feature, por lo que Cucumber 
-// ejecutará esta misma función para los dos caminos.
 When('quiere modificarlo', async function () {
-    resultado = modificarTurnoService.modificarTurno(horasAnticipacion);
+    // 5. Llamamos al método desde turnoService
+    resultado = turnoService.modificarTurno(horasAnticipacion);
 });
 
 // --- RESULTADOS (THEN) ---
