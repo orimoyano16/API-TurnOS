@@ -1,30 +1,31 @@
 import { Given, When, Then, Before } from '@cucumber/cucumber';
 import assert from 'assert';
-import { CancelacionService } from '../../src/Services/cancelacion.service';
+// 1. Cambiamos el import para usar TurnoService
+import { TurnoService } from '../../src/Services/turno.service.ts';
 
-
-let cancelacionService: CancelacionService;
+// 2. Declaramos la variable de nuestro servicio unificado
+let turnoService: TurnoService;
 let respuestaSistema: string | null = null;
 
 Before(function () {
-  cancelacionService = new CancelacionService();
+  // 3. Lo instanciamos en el Before
+  turnoService = new TurnoService();
   respuestaSistema = null;
 });
 
 Given('que un usuario quiere cancelar su turno de manera online', function () {
-  // Inicializamos un turno válido para el usuario
-  cancelacionService.setTurnoActivo(true);
+  // 4. Cambiamos 'cancelacionService' por 'turnoService'
+  turnoService.setTurnoActivo(true);
 });
 
-// Cucumber detecta automáticamente el número '24' de tu Gherkin y lo pasa como {int}
 When('el usuario lo cancele previamente a las {int} horas de gracia', function (horasGracia: number) {
-  // Simulamos que el usuario cancela con 48 horas de anticipación (mayor a 24)
-  respuestaSistema = cancelacionService.cancelarTurno(48);
+  // 5. Cambiamos 'cancelacionService' por 'turnoService'
+  respuestaSistema = turnoService.cancelarTurno(48);
 });
 
 When('el usuario lo cancele', function () {
-  // Simulamos que el usuario cancela con solo 10 horas de anticipación (menor a 24)
-  respuestaSistema = cancelacionService.cancelarTurno(10);
+  // 6. Cambiamos 'cancelacionService' por 'turnoService'
+  respuestaSistema = turnoService.cancelarTurno(10);
 });
 
 Then('aparezca un aviso de exito', function () {
