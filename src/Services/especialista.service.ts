@@ -1,9 +1,6 @@
-export interface Especialista {
-    id: number;
-    nombre: string;
-    servicio: string;
-    disponible: boolean; // Agregamos la disponibilidad al objeto
-}
+// src/Services/especialista.service.ts
+
+import { EspecialistaRepository, Especialista } from '../Repositories/especialista.repository';
 
 export interface ResultadoEspecialista {
     exito: boolean;
@@ -12,31 +9,17 @@ export interface ResultadoEspecialista {
 }
 
 export class EspecialistaService {
-    // Base de datos unificada
-    private especialistas: Especialista[] = [
-        { id: 1, nombre: "Dr. Perez", servicio: "Cardiología", disponible: true },
-        { id: 2, nombre: "Dra. Gomez", servicio: "Dermatología", disponible: true },
-        { id: 3, nombre: "Dr. Lopez", servicio: "Traumatología", disponible: true },
-        // Ya dejamos preparada a la Dra. Moyano sin disponibilidad para tu test de error:
-        { id: 4, nombre: "Dra. Moyano", servicio: "Pediatría", disponible: false } 
-    ];
+    private especialistaRepository: EspecialistaRepository;
+
+    constructor() {
+        this.especialistaRepository = new EspecialistaRepository();
+    }
 
     // ==========================================
     // MÉTODO PARA PREPARAR TESTS (Given)
     // ==========================================
     setDisponibilidad(nombre: string, disponible: boolean): void {
-        const especialista = this.especialistas.find(e => e.nombre === nombre);
-        if (especialista) {
-            especialista.disponible = disponible;
-        } else {
-            // Si el test pide un médico que no existe, lo agregamos temporalmente
-            this.especialistas.push({
-                id: this.especialistas.length + 1,
-                nombre: nombre,
-                servicio: "General",
-                disponible: disponible
-            });
-        }
+        this.especialistaRepository.guardarOActualizar(nombre, disponible);
     }
 
     // ==========================================
@@ -47,19 +30,17 @@ export class EspecialistaService {
         return {
             exito: true,
             mensaje: "Cartilla obtenida con exito.",
-            datos: this.especialistas
+            datos: this.especialistaRepository.obtenerTodos()
         };
     }
 
-    // Permite seleccionar por ID (Para la vista de cartilla)
     seleccionarEspecialistaPorId(id: number): ResultadoEspecialista {
-        const especialista = this.especialistas.find(e => e.id === id);
+        const especialista = this.especialistaRepository.obtenerPorId(id);
         return this.evaluarDisponibilidad(especialista);
     }
 
-    // Permite seleccionar por Nombre (Para tu test de "Dra. Moyano")
     seleccionarEspecialistaPorNombre(nombre: string): ResultadoEspecialista {
-        const especialista = this.especialistas.find(e => e.nombre === nombre);
+        const especialista = this.especialistaRepository.obtenerPorNombre(nombre);
         return this.evaluarDisponibilidad(especialista);
     }
 
@@ -71,8 +52,6 @@ export class EspecialistaService {
                 mensaje: "Especialista seleccionado correctamente."
             };
         } else {
-            // En lugar de hacer "throw new Error", devolvemos un objeto. 
-            // Esto es mucho más fácil de testear en Cucumber con assert.strictEqual()
             return {
                 exito: false,
                 mensaje: "El especialista no esta disponible."

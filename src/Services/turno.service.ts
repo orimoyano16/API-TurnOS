@@ -1,42 +1,42 @@
 // src/Services/turno.service.ts
 
+import { TurnoRepository } from '../repositories/turno.repository';
+
 export interface ResultadoModificacion {
     exito: boolean;
     mensaje: string;
 }
 
 export class TurnoService {
-  // --- ESTADO PARA RESERVAS ---
-  private agenda: Record<string, string> = {};
-  
-  // --- ESTADO PARA CANCELACIONES ---
-  private turnoActivo: boolean = false;
+  private turnoRepository: TurnoRepository;
+
+  constructor() {
+    // Instanciamos el repositorio al crear el servicio
+    this.turnoRepository = new TurnoRepository();
+  }
 
   // ==========================================
   // METODOS DE RESERVA DE TURNO
   // ==========================================
 
-  // Método auxiliar para preparar el escenario en los tests (Given)
   setEstadoAgenda(fecha: string, hora: string, estado: string): void {
     const turnoId = `${fecha} ${hora}`;
-    this.agenda[turnoId] = estado;
+    this.turnoRepository.guardarTurno(turnoId, estado);
   }
 
-  // Método auxiliar para validar el resultado (Then)
   getEstadoTurno(fecha: string, hora: string): string {
     const turnoId = `${fecha} ${hora}`;
-    return this.agenda[turnoId] || 'disponible';
+    return this.turnoRepository.obtenerTurno(turnoId);
   }
 
-  // Lógica principal de negocio (When)
   reservarTurno(fecha: string, hora: string): string {
     const turnoId = `${fecha} ${hora}`;
     
-    if (this.agenda[turnoId] === 'ocupado') {
+    if (this.turnoRepository.obtenerTurno(turnoId) === 'ocupado') {
       throw new Error('El horario seleccionado no está disponible');
     }
 
-    this.agenda[turnoId] = 'ocupado';
+    this.turnoRepository.guardarTurno(turnoId, 'ocupado');
     return 'Reserva exitosa';
   }
 
@@ -45,7 +45,6 @@ export class TurnoService {
   // ==========================================
 
   modificarTurno(horasAnticipacion: number): ResultadoModificacion {
-    // La regla de negocio indica que debe ser 24 horas previas
     if (horasAnticipacion >= 24) {
         return {
             exito: true,
@@ -63,23 +62,20 @@ export class TurnoService {
   // METODOS DE CANCELACION DE TURNO
   // ==========================================
 
-  // Preparamos el escenario simulando que el usuario ya tiene un turno
   setTurnoActivo(estado: boolean): void {
-    this.turnoActivo = estado;
+    this.turnoRepository.setTurnoActivo(estado);
   }
 
-  // Lógica principal: evaluamos las horas de anticipación
   cancelarTurno(horasAnticipacion: number): string {
-    if (!this.turnoActivo) {
+    if (!this.turnoRepository.getTurnoActivo()) {
       throw new Error('No hay turno registrado para cancelar');
     }
 
-    this.turnoActivo = false; // El turno queda cancelado
+    this.turnoRepository.setTurnoActivo(false); 
 
     if (horasAnticipacion >= 24) {
       return 'Cancelación exitosa';
     } else {
-      // Como no devuelve un objeto como en modificar, mantenemos tu lógica original devolviendo el string
       return 'No habrá reembolso de su seña';
     }
   }
