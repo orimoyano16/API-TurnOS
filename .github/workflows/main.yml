@@ -1,11 +1,11 @@
 name: CI/CD Pipeline - API-TurnOS
 
-# El pipeline se ejecutará cada vez que hagas un push a la rama main
-# on:
-#  push:
-#    branches: [ "main", "master" ]
-#  pull_request:
-#    branches: [ "main", "master" ]
+ #El pipeline se ejecutará cada vez que hagas un push a la rama main
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
 
 jobs:
   build-and-test:
