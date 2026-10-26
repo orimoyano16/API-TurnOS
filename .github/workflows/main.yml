@@ -20,7 +20,7 @@ jobs:
     - name: Configurar Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20' # Utilizamos una versión estable de Node
+        node-version: '22' # Utilizamos una versión estable de Node
         cache: 'npm'
 
     # 3. Instala las dependencias (Express, Cucumber, TypeScript, etc.)
