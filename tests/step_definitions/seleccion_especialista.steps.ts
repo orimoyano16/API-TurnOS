@@ -1,7 +1,7 @@
 // tests/step_definitions/seleccion_especialista.steps.ts
 import { Given, When, Then } from "@cucumber/cucumber";
 import * as assert from "assert";
-import { EspecialistaService, ResultadoEspecialista } from "../../src/Services/especialista.service.ts";
+import { EspecialistaService, ResultadoEspecialista } from "../../src/services/especialista.service.js";
 
 let especialistaService: EspecialistaService;
 let resultado: ResultadoEspecialista;

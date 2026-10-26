@@ -1,6 +1,6 @@
 // src/Services/pago.service.ts
 
-import { PagoRepository } from '../Repositories/pago.repository';
+import { PagoRepository } from '../repositories/pago.repository';
 
 export interface ResultadoPago {
     exito: boolean;

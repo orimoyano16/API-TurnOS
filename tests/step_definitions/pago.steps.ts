@@ -1,7 +1,7 @@
 // pago.steps.ts
 import { Given, When, Then } from "@cucumber/cucumber";
 import * as assert from "assert";
-import { PagoService, ResultadoPago } from "../../src/Services/pago.service";
+import { PagoService, ResultadoPago } from "../../src/services/pago.service";
 
 let pagoService: PagoService;
 let saldoUsuario: number;

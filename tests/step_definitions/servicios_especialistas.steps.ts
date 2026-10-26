@@ -2,7 +2,7 @@
 import { Given, When, Then } from "@cucumber/cucumber";
 import * as assert from "assert";
 // Importamos el servicio unificado (¡Asegúrate de que la ruta sea la correcta para tu proyecto!)
-import { EspecialistaService, ResultadoEspecialista } from "../../src/Services/especialista.service.ts";
+import { EspecialistaService, ResultadoEspecialista } from "../../src/services/especialista.service.js";
 
 let especialistaService: EspecialistaService;
 let resultado: ResultadoEspecialista;

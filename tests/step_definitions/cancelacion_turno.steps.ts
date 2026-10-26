@@ -1,7 +1,7 @@
 import { Given, When, Then, Before } from '@cucumber/cucumber';
 import assert from 'assert';
 // 1. Cambiamos el import para usar TurnoService
-import { TurnoService } from '../../src/Services/turno.service.ts';
+import { TurnoService } from '../../src/services/turno.service.js';
 
 // 2. Declaramos la variable de nuestro servicio unificado
 let turnoService: TurnoService;

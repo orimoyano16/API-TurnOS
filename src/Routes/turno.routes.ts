@@ -1,7 +1,7 @@
 // src/routes/turno.routes.ts
 import { Router } from 'express';
-import { reservarTurno, seleccionarEspecialista, cancelarTurno } from '../Controllers/turno.controller';
-import { procesarPago } from '../Controllers/pago.controller'; // <-- Nueva importación
+import { reservarTurno, seleccionarEspecialista, cancelarTurno } from '../controllers/turno.controller';
+import { procesarPago } from '../controllers/pago.controller'; // <-- Nueva importación
 
 const router = Router();
 

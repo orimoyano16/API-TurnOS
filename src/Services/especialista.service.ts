@@ -1,6 +1,6 @@
 // src/Services/especialista.service.ts
 
-import { EspecialistaRepository, Especialista } from '../Repositories/especialista.repository';
+import { EspecialistaRepository, Especialista } from '../repositories/especialista.repository';
 
 export interface ResultadoEspecialista {
     exito: boolean;

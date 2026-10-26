@@ -2,7 +2,7 @@
 import { Given, When, Then } from "@cucumber/cucumber";
 import * as assert from "assert";
 // 1. Cambiamos ModificarTurnoService por TurnoService y agregamos .ts al final
-import { TurnoService, ResultadoModificacion } from "../../src/Services/turno.service.ts";
+import { TurnoService, ResultadoModificacion } from "../../src/services/turno.service.js";
 
 // 2. Usamos TurnoService
 let turnoService: TurnoService;

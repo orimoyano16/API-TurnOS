@@ -1,6 +1,6 @@
 import { Given, When, Then, Before } from '@cucumber/cucumber';
 import assert from 'assert';
-import { TurnoService } from '../../src/Services/turno.service';
+import { TurnoService } from '../../src/services/turno.service';
 
 
 

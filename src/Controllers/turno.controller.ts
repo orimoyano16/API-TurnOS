@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { TurnoService } from '../Services/turno.service';
-import { EspecialistaService } from '../Services/especialista.service';
+import { TurnoService } from '../services/turno.service';
+import { EspecialistaService } from '../services/especialista.service';
 
 // Instanciamos los servicios 
 const turnoService = new TurnoService();
