@@ -1,22 +1,22 @@
-// src/Repositories/pago.repository.ts
+// src/repositories/pago.repository.ts
+import { prisma } from '../db/prisma';
 
-export interface Transaccion {
-    id: string;
+export interface TransaccionDTO {
     metodoPago: string;
     monto: number;
-    fecha: Date;
-    estado: 'aprobado' | 'rechazado';
+    estado: string;
 }
 
 export class PagoRepository {
-    // Aquí guardaremos el historial de todos los intentos de pago
-    private historialPagos: Transaccion[] = [];
-
-    guardarTransaccion(transaccion: Transaccion): void {
-        this.historialPagos.push(transaccion);
+    async guardarTransaccion(transaccion: TransaccionDTO): Promise<void> {
+        await prisma.pago.create({
+            data: transaccion // El ID y la fecha los genera Prisma por defecto
+        });
     }
 
-    obtenerHistorial(): Transaccion[] {
-        return this.historialPagos;
+    async obtenerHistorial() {
+        return await prisma.pago.findMany({
+            orderBy: { fecha: 'desc' }
+        });
     }
 }

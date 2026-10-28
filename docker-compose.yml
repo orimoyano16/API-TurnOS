@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: api-turnos
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: turnos_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - database:/var/lib/postgresql/data
+
+volumes:
+  database:

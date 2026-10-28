@@ -1,14 +1,16 @@
+// src/controllers/pago.controller.ts
+
 import { Request, Response } from 'express';
 import { PagoService } from '../services/pago.service';
 
 const pagoService = new PagoService();
 
-export const procesarPago = (req: Request, res: Response) => {
+export const procesarPago = async (req: Request, res: Response) => {
     try {
         const { metodoPago, saldoDisponible, montoSeña } = req.body;
         
-        // Llamamos al servicio con los datos que envía el usuario desde la web/Postman
-        const resultado = pagoService.procesarPago(metodoPago, saldoDisponible, montoSeña);
+        // Llamamos al servicio con los datos que envía el usuario usando await
+        const resultado = await pagoService.procesarPago(metodoPago, saldoDisponible, montoSeña);
         
         if (resultado.exito) {
             res.status(200).json(resultado);

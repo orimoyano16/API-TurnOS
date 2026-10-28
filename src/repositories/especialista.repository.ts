@@ -1,44 +1,32 @@
-// src/Repositories/especialista.repository.ts
-
-export interface Especialista {
-    id: number;
-    nombre: string;
-    servicio: string;
-    disponible: boolean;
-}
+// src/repositories/especialista.repository.ts
+import { prisma } from '../db/prisma';
 
 export class EspecialistaRepository {
-    // La base de datos ahora vive exclusivamente en el Repositorio
-    private especialistas: Especialista[] = [
-        { id: 1, nombre: "Dr. Perez", servicio: "Cardiología", disponible: true },
-        { id: 2, nombre: "Dra. Gomez", servicio: "Dermatología", disponible: true },
-        { id: 3, nombre: "Dr. Lopez", servicio: "Traumatología", disponible: true },
-        { id: 4, nombre: "Dra. Moyano", servicio: "Pediatría", disponible: false }
-    ];
-
-    obtenerTodos(): Especialista[] {
-        return this.especialistas;
+    async obtenerTodos() {
+        return await prisma.especialista.findMany();
     }
 
-    obtenerPorId(id: number): Especialista | undefined {
-        return this.especialistas.find(e => e.id === id);
+    async obtenerPorId(id: number) {
+        return await prisma.especialista.findUnique({
+            where: { id }
+        });
     }
 
-    obtenerPorNombre(nombre: string): Especialista | undefined {
-        return this.especialistas.find(e => e.nombre === nombre);
+    async obtenerPorNombre(nombre: string) {
+        return await prisma.especialista.findUnique({
+            where: { nombre }
+        });
     }
 
-    guardarOActualizar(nombre: string, disponible: boolean): void {
-        const especialista = this.obtenerPorNombre(nombre);
-        if (especialista) {
-            especialista.disponible = disponible;
-        } else {
-            this.especialistas.push({
-                id: this.especialistas.length + 1,
+    async guardarOActualizar(nombre: string, disponible: boolean): Promise<void> {
+        await prisma.especialista.upsert({
+            where: { nombre },
+            update: { disponible },
+            create: {
                 nombre: nombre,
                 servicio: "General",
                 disponible: disponible
-            });
-        }
+            }
+        });
     }
 }
