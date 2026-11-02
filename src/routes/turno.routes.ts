@@ -7,7 +7,6 @@ const router = Router();
 
 router.post('/turnos/reservar', reservarTurno);
 router.post('/turnos/cancelar', cancelarTurno);
-router.post('/especialistas/seleccionar', seleccionarEspecialista);
 
 // <-- Nuevo endpoint para pagos
 router.post('/pagos/procesar', procesarPago); 

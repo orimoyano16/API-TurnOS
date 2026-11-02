@@ -1,6 +1,117 @@
 
 # API-TurnOS - Proyecto Programacion Extrema
 
+API RESTful desarrollada en Node.js y TypeScript para la gestión de turnos, especialistas y pagos. Utiliza una arquitectura basada en capas (Controladores, Servicios y Repositorios), conectándose a una base de datos PostgreSQL persistida mediante Docker y administrada a través del ORM Prisma. Además, cuenta con un entorno de pruebas automatizadas BDD utilizando Cucumber.
+
+## 🚀 Instalación y Ejecución Local
+
+### Requisitos Previos
+Asegúrate de tener instaladas las siguientes herramientas en tu sistema:
+- **Node.js** (versión LTS actual recomendada).
+- **Docker y Docker Compose** (asegúrate de que el motor de Docker esté ejecutándose en tu sistema).
+- **pnpm** o **npm** como gestor de paquetes.
+
+### 1. Clonar el repositorio
+```bash
+git clone https://github.com/orimoyano16/API-TurnOS
+cd API-TurnOS
+```
+
+### 2. Instalar dependencias
+Puedes instalar las dependencias utilizando el gestor de paquetes de tu preferencia:
+
+**Con pnpm:**
+```bash
+pnpm install
+```
+
+**Con npm:**
+```bash
+npm install
+```
+
+### 3. Configurar variables de entorno
+Crea un archivo `.env` en la raíz del proyecto. Solo se requiere la clave `DATABASE_URL`, la cual debe coincidir con las credenciales configuradas en tu archivo `docker-compose.yml`:
+```env
+DATABASE_URL="postgresql://usuario:password123@localhost:5432/turnos_db?schema=public"
+```
+
+### 4. Levantar la base de datos
+Inicia el contenedor de PostgreSQL en segundo plano utilizando Docker Compose. Abre tu terminal en la raíz del proyecto y ejecuta:
+```bash
+docker compose up -d
+```
+*(Nota: En algunas distribuciones de Linux podrías necesitar usar `sudo docker-compose up -d`).*
+
+### 5. Aplicar migraciones del esquema
+Una vez que la base de datos esté lista y corriendo, sincroniza las tablas mediante el ORM de Prisma.
+
+**Con pnpm:**
+```bash
+pnpm exec prisma migrate dev
+```
+
+**Con npm:**
+```bash
+npx prisma migrate dev
+```
+
+### 6. Iniciar el servidor en modo desarrollo
+Levanta la API utilizando el script configurado para tu entorno de desarrollo.
+
+**Con pnpm:**
+```bash
+pnpm run dev
+```
+
+**Con npm:**
+```bash
+npm run dev
+```
+
+### 7. Ejecutar la suite de pruebas
+Para correr los tests de comportamiento estructurados con Cucumber, ejecuta:
+
+**Con pnpm:**
+```bash
+pnpm run test
+```
+
+**Con npm:**
+```bash
+npm run test
+```
+
+---
+
+## 🛠️ Verificar el funcionamiento de la API
+
+Una vez que el servidor esté corriendo (paso 6), puedes comprobar que todo se levantó correctamente haciendo una petición al endpoint de especialistas.
+
+Abre tu navegador, Postman o utiliza `curl` en otra terminal para hacer una petición `GET` a la siguiente ruta (asumiendo que el servidor corre en el puerto 3000):
+
+```bash
+curl http://localhost:3000/especialistas
+```
+
+Deberías recibir un código de estado `200 OK` y una respuesta en formato JSON con la cartilla de especialistas, similar a esta:
+
+```json
+{
+  "exito": true,
+  "mensaje": "Cartilla obtenida con exito.",
+  "datos": [
+    {
+      "id": 1,
+      "nombre": "Dr. Perez",
+      "servicio": "Cardiología",
+      "disponible": true
+    }
+  ]
+}
+```
+*(Nota: Si la base de datos está recién creada y vacía, el arreglo de `"datos"` aparecerá vacío `[]` hasta que ingreses información).*
+
 # 1.1 Requisitos Funcionales
 ## Santiago Marranti, Oriana Moyano
 ### _Turnero online_ 
@@ -105,3 +216,4 @@
 >1.  **Como** auditor de seguridad,   <br>
 > **Quiero** que las contraseñas de los usuarios y los datos sensibles de los pagos se almacenen mediante hashing (ej. bcrypt) <br>
 > **Para** proteger la integridad y privacidad de la información en caso de una vulneración a la base de datos. <br>
+
