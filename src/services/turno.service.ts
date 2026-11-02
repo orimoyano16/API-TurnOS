@@ -1,4 +1,4 @@
-// src/Services/turno.service.ts
+// src/services/turno.service.ts
 
 import { TurnoRepository } from '../repositories/turno.repository';
 
@@ -11,67 +11,54 @@ export class TurnoService {
   private turnoRepository: TurnoRepository;
 
   constructor() {
-    // Instanciamos el repositorio al crear el servicio
     this.turnoRepository = new TurnoRepository();
   }
 
-  // ==========================================
-  // METODOS DE RESERVA DE TURNO
-  // ==========================================
-
-  setEstadoAgenda(fecha: string, hora: string, estado: string): void {
+  async setEstadoAgenda(fecha: string, hora: string, estado: string): Promise<void> {
     const turnoId = `${fecha} ${hora}`;
-    this.turnoRepository.guardarTurno(turnoId, estado);
+    await this.turnoRepository.guardarTurno(turnoId, estado);
   }
 
-  getEstadoTurno(fecha: string, hora: string): string {
+  async getEstadoTurno(fecha: string, hora: string): Promise<string> {
     const turnoId = `${fecha} ${hora}`;
-    return this.turnoRepository.obtenerTurno(turnoId);
+    return await this.turnoRepository.obtenerTurno(turnoId);
   }
 
-  reservarTurno(fecha: string, hora: string): string {
+  async reservarTurno(fecha: string, hora: string): Promise<string> {
     const turnoId = `${fecha} ${hora}`;
     
-    if (this.turnoRepository.obtenerTurno(turnoId) === 'ocupado') {
+    const estadoActual = await this.turnoRepository.obtenerTurno(turnoId);
+    if (estadoActual === 'ocupado') {
       throw new Error('El horario seleccionado no está disponible');
     }
 
-    this.turnoRepository.guardarTurno(turnoId, 'ocupado');
+    await this.turnoRepository.guardarTurno(turnoId, 'ocupado');
     return 'Reserva exitosa';
   }
 
-  // ==========================================
-  // METODOS DE MODIFICACION DE TURNO
-  // ==========================================
-
   modificarTurno(horasAnticipacion: number): ResultadoModificacion {
     if (horasAnticipacion >= 24) {
-        return {
-            exito: true,
-            mensaje: "Modificacion exitosa."
-        };
+        return { exito: true, mensaje: "Modificacion exitosa." };
     } else {
-        return {
-            exito: false,
-            mensaje: "No se puede modificar, faltan menos de 24 horas."
-        };
+        return { exito: false, mensaje: "No se puede modificar, faltan menos de 24 horas." };
     }
   }
 
-  // ==========================================
-  // METODOS DE CANCELACION DE TURNO
-  // ==========================================
-
-  setTurnoActivo(estado: boolean): void {
-    this.turnoRepository.setTurnoActivo(estado);
+  // NOTA: Como la base de datos ahora asocia el estado activo a un turno específico, 
+  // necesitamos pasar el turnoId ('fecha hora') a estos métodos.
+  async setTurnoActivo(turnoId: string, estado: boolean): Promise<void> {
+    await this.turnoRepository.setTurnoActivo(turnoId, estado);
   }
 
-  cancelarTurno(horasAnticipacion: number): string {
-    if (!this.turnoRepository.getTurnoActivo()) {
+  async cancelarTurno(turnoId: string, horasAnticipacion: number): Promise<string> {
+    const estaActivo = await this.turnoRepository.getTurnoActivo(turnoId);
+    
+    if (!estaActivo) {
       throw new Error('No hay turno registrado para cancelar');
     }
 
-    this.turnoRepository.setTurnoActivo(false); 
+    await this.turnoRepository.setTurnoActivo(turnoId, false); 
+    await this.turnoRepository.guardarTurno(turnoId, 'disponible'); // Opcional: liberamos el horario
 
     if (horasAnticipacion >= 24) {
       return 'Cancelación exitosa';

@@ -1,4 +1,4 @@
-// src/Services/pago.service.ts
+// src/services/pago.service.ts
 
 import { PagoRepository } from '../repositories/pago.repository';
 
@@ -14,15 +14,13 @@ export class PagoService {
         this.pagoRepository = new PagoRepository();
     }
 
-    procesarPago(metodoPago: string, saldoDisponible: number, montoSeña: number): ResultadoPago {
+    async procesarPago(metodoPago: string, saldoDisponible: number, montoSeña: number): Promise<ResultadoPago> {
         const pagoAprobado = saldoDisponible >= montoSeña;
         
-        // Guardamos el registro en la capa de datos
-        this.pagoRepository.guardarTransaccion({
-            id: Math.random().toString(36).substr(2, 9), // Generamos un ID aleatorio simulado
+        // El ID y la fecha ya no se generan aquí porque Prisma lo hace automáticamente
+        await this.pagoRepository.guardarTransaccion({
             metodoPago: metodoPago,
             monto: montoSeña,
-            fecha: new Date(),
             estado: pagoAprobado ? 'aprobado' : 'rechazado'
         });
 

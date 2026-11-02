@@ -1,25 +1,37 @@
 // src/repositories/turno.repository.ts
+import { prisma } from '../db/prisma';
 
 export class TurnoRepository {
-  // --- ESTADO (Base de datos simulada) ---
-  private agenda: Record<string, string> = {};
-  private turnoActivo: boolean = false;
+    async guardarTurno(turnoId: string, estado: string): Promise<void> {
+        await prisma.turno.upsert({
+            where: { id: turnoId },
+            update: { estado },
+            create: {
+                id: turnoId,
+                estado: estado,
+                activo: true
+            }
+        });
+    }
 
-  // --- Operaciones para Reservas ---
-  guardarTurno(turnoId: string, estado: string): void {
-    this.agenda[turnoId] = estado;
-  }
+    async obtenerTurno(turnoId: string): Promise<string> {
+        const turno = await prisma.turno.findUnique({
+            where: { id: turnoId }
+        });
+        return turno?.estado || 'disponible';
+    }
 
-  obtenerTurno(turnoId: string): string {
-    return this.agenda[turnoId] || 'disponible';
-  }
+    async setTurnoActivo(turnoId: string, estadoActivo: boolean): Promise<void> {
+        await prisma.turno.update({
+            where: { id: turnoId },
+            data: { activo: estadoActivo }
+        });
+    }
 
-  // --- Operaciones para Cancelaciones ---
-  setTurnoActivo(estado: boolean): void {
-    this.turnoActivo = estado;
-  }
-
-  getTurnoActivo(): boolean {
-    return this.turnoActivo;
-  }
+    async getTurnoActivo(turnoId: string): Promise<boolean> {
+        const turno = await prisma.turno.findUnique({
+            where: { id: turnoId }
+        });
+        return turno?.activo || false;
+    }
 }

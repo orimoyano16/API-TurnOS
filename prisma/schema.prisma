@@ -1,0 +1,35 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// --- MODELOS ---
+
+model Especialista {
+  id         Int     @id @default(autoincrement())
+  nombre     String  @unique // Lo hacemos único porque tu código busca y actualiza por nombre
+  servicio   String
+  disponible Boolean @default(true)
+}
+
+model Pago {
+  id         String   @id @default(uuid()) // Asumiendo que el ID es un string tipo UUID
+  metodoPago String
+  monto      Float
+  fecha      DateTime @default(now())
+  estado     String   // Puede ser "aprobado" o "rechazado"
+}
+
+model Turno {
+  id         String   @id
+  estado     String   @default("disponible")
+  // En tu código en memoria usabas un booleano global "turnoActivo". 
+  // En base de datos es mejor asociar ese estado de actividad a cada registro de turno.
+  activo     Boolean  @default(false) 
+}
