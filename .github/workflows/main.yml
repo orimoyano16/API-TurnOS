@@ -40,11 +40,11 @@ jobs:
       run: npx prisma migrate deploy
       env:
         # Asegúrate de que esto coincida con lo que tienes en tu docker-compose.yml
-        DATABASE_URL: "postgresql://usuario:password123@localhost:5432/turnos_db?schema=public"
+        DATABASE_URL: "postgresql://postgres:admin@localhost:5432/turnos_db?schema=public"
 
     # 7. Ejecuta tu suite de pruebas BDD con Cucumber
     - name: Ejecutar pruebas (Fase Verde XP)
       run: npm test
       env:
         # Los tests necesitan la variable para conectarse a la DB levantada
-        DATABASE_URL: "postgresql://usuario:password123@localhost:5432/turnos_db?schema=public"
+        DATABASE_URL: "postgresql://postgres:admin@localhost:5432/turnos_db?schema=public"
