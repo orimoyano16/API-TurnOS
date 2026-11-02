@@ -2,6 +2,7 @@
 import express from 'express';
 import cors from 'cors';
 import turnoRoutes from './routes/turno.routes';
+import especialistaRoutes from './routes/especialista.routes';
 
 const app = express();
 const PORT = 3000;
@@ -17,6 +18,8 @@ app.get('/', (req, res) => {
 
 // Inyectamos las rutas de la API
 app.use('/api', turnoRoutes);
+
+app.use('/especialistas', especialistaRoutes);
 
 // Iniciar el servidor
 app.listen(PORT, () => {

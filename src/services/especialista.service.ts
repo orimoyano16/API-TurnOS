@@ -1,6 +1,9 @@
-// src/Services/especialista.service.ts
+// src/services/especialista.service.ts
 
-import { EspecialistaRepository, Especialista } from '../repositories/especialista.repository';
+import { EspecialistaRepository } from '../repositories/especialista.repository';
+
+// NOTA: Prisma genera los tipos. Puedes importar el tipo 'Especialista' directamente desde '@prisma/client'
+import { Especialista } from '@prisma/client';
 
 export interface ResultadoEspecialista {
     exito: boolean;
@@ -15,36 +18,30 @@ export class EspecialistaService {
         this.especialistaRepository = new EspecialistaRepository();
     }
 
-    // ==========================================
-    // MÉTODO PARA PREPARAR TESTS (Given)
-    // ==========================================
-    setDisponibilidad(nombre: string, disponible: boolean): void {
-        this.especialistaRepository.guardarOActualizar(nombre, disponible);
+    async setDisponibilidad(nombre: string, disponible: boolean): Promise<void> {
+        await this.especialistaRepository.guardarOActualizar(nombre, disponible);
     }
-
-    // ==========================================
-    // MÉTODOS DE NEGOCIO (When)
-    // ==========================================
     
-    obtenerCartillaCompleta(): ResultadoEspecialista {
+    async obtenerCartillaCompleta(): Promise<ResultadoEspecialista> {
+        const especialistas = await this.especialistaRepository.obtenerTodos();
         return {
             exito: true,
             mensaje: "Cartilla obtenida con exito.",
-            datos: this.especialistaRepository.obtenerTodos()
+            datos: especialistas
         };
     }
 
-    seleccionarEspecialistaPorId(id: number): ResultadoEspecialista {
-        const especialista = this.especialistaRepository.obtenerPorId(id);
-        return this.evaluarDisponibilidad(especialista);
+    async seleccionarEspecialistaPorId(id: number): Promise<ResultadoEspecialista> {
+        const especialista = await this.especialistaRepository.obtenerPorId(id);
+        return this.evaluarDisponibilidad(especialista ?? undefined);
     }
 
-    seleccionarEspecialistaPorNombre(nombre: string): ResultadoEspecialista {
-        const especialista = this.especialistaRepository.obtenerPorNombre(nombre);
-        return this.evaluarDisponibilidad(especialista);
+    // He renombrado este método a 'seleccionarEspecialista' para que coincida con la llamada en tu controlador
+    async seleccionarEspecialista(nombre: string): Promise<ResultadoEspecialista> {
+        const especialista = await this.especialistaRepository.obtenerPorNombre(nombre);
+        return this.evaluarDisponibilidad(especialista ?? undefined);
     }
 
-    // Lógica interna compartida para no repetir código
     private evaluarDisponibilidad(especialista?: Especialista): ResultadoEspecialista {
         if (especialista && especialista.disponible) {
             return {
