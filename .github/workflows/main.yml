@@ -1,6 +1,6 @@
 name: CI/CD Pipeline - API-TurnOS
 
- #El pipeline se ejecutará cada vez que hagas un push a la rama main
+# El pipeline se ejecutará cada vez que hagas un push a la rama main o master
 on:
   push:
     branches: [ "main", "master" ]
@@ -23,10 +23,28 @@ jobs:
         node-version: '22' # Utilizamos una versión estable de Node
         cache: 'npm'
 
-    # 3. Instala las dependencias (Express, Cucumber, TypeScript, etc.)
+    # 3. Instala las dependencias (Express, Cucumber, Prisma, etc.)
     - name: Instalar dependencias
       run: npm install
 
-    # 4. Ejecuta tu suite de pruebas BDD con Cucumber
+    # 4. Levantar la base de datos usando el archivo docker-compose.yml de tu repo
+    - name: Iniciar base de datos
+      run: docker compose up -d
+
+    # 5. Darle unos segundos a PostgreSQL para que termine de inicializarse
+    - name: Esperar a la base de datos
+      run: sleep 5
+
+    # 6. Aplicar el esquema de Prisma a la base de datos temporal de GitHub Actions
+    - name: Ejecutar migraciones de Prisma
+      run: npx prisma migrate deploy
+      env:
+        # Asegúrate de que esto coincida con lo que tienes en tu docker-compose.yml
+        DATABASE_URL: "postgresql://usuario:password123@localhost:5432/turnos_db?schema=public"
+
+    # 7. Ejecuta tu suite de pruebas BDD con Cucumber
     - name: Ejecutar pruebas (Fase Verde XP)
       run: npm test
+      env:
+        # Los tests necesitan la variable para conectarse a la DB levantada
+        DATABASE_URL: "postgresql://usuario:password123@localhost:5432/turnos_db?schema=public"
