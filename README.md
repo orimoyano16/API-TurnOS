@@ -3,6 +3,10 @@
 
 API RESTful desarrollada en Node.js y TypeScript para la gestión de turnos, especialistas y pagos. Utiliza una arquitectura basada en capas (Controladores, Servicios y Repositorios), conectándose a una base de datos PostgreSQL persistida mediante Docker y administrada a través del ORM Prisma. Además, cuenta con un entorno de pruebas automatizadas BDD utilizando Cucumber.
 
+# Autenticacion y Autorizacion
+
+![alt text](imagenes/auth.png)
+
 ## 🚀 Instalación y Ejecución Local
 
 ### Requisitos Previos

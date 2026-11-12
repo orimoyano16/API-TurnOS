@@ -1,6 +1,7 @@
 // src/routes/turno.routes.ts
 import { Router } from 'express';
 import { reservarTurno, cancelarTurno } from '../controllers/turno.controller';
+import authMiddleware = require('../middlewares/auth.middleware');
 
 const router = Router();
 
@@ -57,7 +58,7 @@ const router = Router();
  *                   example: "El horario seleccionado no está disponible"
  */
 
-router.post('/reservar', reservarTurno);
+router.post('/reservar', authMiddleware.requireAuth, reservarTurno);
 
 /**
  * @swagger
