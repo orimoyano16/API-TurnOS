@@ -6,6 +6,7 @@ import {
     seleccionarEspecialistaPorNombre, 
     seleccionarEspecialistaPorId 
 } from '../controllers/especialista.controller';
+import authMiddleware = require('../middlewares/auth.middleware');
 
 const router = Router();
 
@@ -41,7 +42,7 @@ const router = Router();
  *                       disponible:
  *                         type: boolean
  */
-router.get('/', obtenerCartilla);
+router.get('/', authMiddleware.requireAuth, obtenerCartilla);
 
 /**
  * @swagger

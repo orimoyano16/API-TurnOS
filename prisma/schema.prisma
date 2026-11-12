@@ -11,6 +11,14 @@ datasource db {
 
 // --- MODELOS ---
 
+model Usuario {
+  id       Int    @id @default(autoincrement())
+  nombre   String
+  email    String @unique
+  password String
+  rol      String @default("USER") // Roles: USER, ADMIN
+}
+
 model Especialista {
   id         Int     @id @default(autoincrement())
   nombre     String  @unique // Lo hacemos único porque tu código busca y actualiza por nombre
